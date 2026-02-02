@@ -1,0 +1,87 @@
+Office Backup Incident — Official Solution
+
+Step 1 — Recover Deleted Files
+
+Use PhotoRec:
+
+sudo photorec ctf_forensics.img
+
+Select:
+- Disk → Proceed
+- FAT partition
+- FAT/NTFS filesystem
+- Whole disk
+- Destination: Desktop
+- Start recovery (SHIFT + C)
+
+Recovered files appear in:
+
+~/Desktop/recup_dir.1
+
+Step 2 — Identify Important Files
+
+cd ~/Desktop/recup_dir.1
+find . -type f -exec file {} \;
+
+Key files:
+
+Encrypted ZIP:
+f0000736_secret.zip
+
+JPEG image:
+f0000760.jpg
+
+Other ZIP files are decoys.
+
+
+Step 3 — Copy Real Files
+
+cp f0000736_secret.zip ~/Desktop/real.zip
+cp f0000760.jpg ~/Desktop/photo.jpg
+cd ~/Desktop
+
+Step 4 — Extract ZIP Password
+
+exiftool photo.jpg
+
+Metadata reveals:
+
+office wifi rotated → dXNiX2FkbWluXzIwMjY=
+
+Decode:
+
+echo "dXNiX2FkbWluXzIwMjY=" | base64 -d
+
+Password:
+
+usb_admin_2026
+
+Step 5 — Decrypt ZIP
+
+unzip real.zip
+
+Enter password:
+usb_admin_2026
+
+This extracts:
+
+secret.txt
+
+Step 6 — Decode Flag (Base64 twice)
+
+base64 -d secret.txt > stage1.txt
+base64 -d stage1.txt
+
+Final Flag:
+
+SECE{0n3_sm4ll_bug_0wn3d}
+
+Attack Flow Summary:
+
+PhotoRec
+→ recover ZIP + JPG
+→ EXIF metadata
+→ Base64 password
+→ unzip archive
+→ Base64 decode ×2
+→ FLAG
