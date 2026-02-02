@@ -1,0 +1,21 @@
+Title: Office Backup Incident
+Category: Digital Forensics
+
+Description:
+A USB drive recovered from an office workstation appears to contain several
+documents and backups. However, the employee claims an important encrypted
+archive was accidentally deleted before the device was handed over.
+
+Your task is to analyze the provided disk image and recover the confidential
+data.
+
+You are given:
+ctf_forensics.img
+
+Goal:
+Recover the hidden flag.
+--------
+Hint 1:
+Deleted files may still exist inside the disk image. Try carving.
+
+Good luck!
